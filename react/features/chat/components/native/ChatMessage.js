@@ -93,6 +93,8 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
     _getFormattedTimestamp: () => string;
 
+    _getLobbyNoticeMessage: () => string;
+
     _getMessageText: () => string;
 
     _getPrivateNoticeMessage: () => string;
@@ -155,21 +157,41 @@ class ChatMessage extends AbstractChatMessage<Props> {
     }
 
     /**
+     * Renders the message lobby chat notice, if necessary.
+     *
+     * @returns {React$Element<*> | null}
+     */
+    __renderLobbyChatNotice() {
+        const { _styles, message } = this.props;
+
+        if (!message.lobbyChat) {
+            return null;
+        }
+
+        return (
+            <Text style = { _styles.lobbyChatNotice }>
+                { this._getLobbyNoticeMessage() }
+            </Text>
+        );
+    }
+
+    /**
      * Renders the private reply button, if necessary.
      *
      * @returns {React$Element<*> | null}
      */
     _renderPrivateReplyButton() {
-        const { _styles, message } = this.props;
-        const { messageType, privateMessage } = message;
+        const { _styles, message, knocking } = this.props;
+        const { messageType, privateMessage, lobbyChat } = message;
 
-        if (!privateMessage || messageType === MESSAGE_TYPE_LOCAL) {
+        if (!(privateMessage || lobbyChat) || messageType === MESSAGE_TYPE_LOCAL || knocking) {
             return null;
         }
 
         return (
             <View style = { _styles.replyContainer }>
                 <PrivateMessageButton
+                    isLobbyChat = { lobbyChat }
                     participantID = { message.id }
                     reply = { true }
                     showLabel = { false }
@@ -204,7 +226,8 @@ class ChatMessage extends AbstractChatMessage<Props> {
  */
 function _mapStateToProps(state) {
     return {
-        _styles: ColorSchemeRegistry.get(state, 'Chat')
+        _styles: ColorSchemeRegistry.get(state, 'Chat'),
+        knocking: state['features/lobby'].knocking
     };
 }
 

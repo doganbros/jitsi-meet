@@ -80,6 +80,8 @@
         "today": "Today"
     },
     "chat": {
+        "lobbyChatNotice": "Lobby chat message to {{recipient}}",
+        "lobbyChatMessageTo": "Lobby chat message to {{recipient}}",
         "enter": "Enter room",
         "error": "Error: your message was not sent. Reason: {{error}}",
         "fieldPlaceHolder": "Type your message here",
@@ -528,6 +530,8 @@
         "admitAll": "Admit all",
         "allow": "Allow",
         "backToKnockModeButton": "Ask to join",
+        "lobbyChatStartedNotification": "{{moderator}} started a lobby chat with {{attendee}}",
+        "lobbyChatStartedTitle": "{{moderator}} has started a lobby chat with you.",
         "dialogTitle": "Lobby mode",
         "disableDialogContent": "Lobby mode is currently enabled. This feature ensures that unwanted participants can't join your meeting. Do you want to disable it?",
         "disableDialogSubmit": "Disable",

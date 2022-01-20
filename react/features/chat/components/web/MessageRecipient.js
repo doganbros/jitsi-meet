@@ -38,9 +38,16 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
      * @returns {void}
      */
     _onKeyPress(e) {
-        if (this.props._onRemovePrivateMessageRecipient && (e.key === ' ' || e.key === 'Enter')) {
+        if (
+            (this.props._onRemovePrivateMessageRecipient || this.props._onHideLobbyChatRecipient)
+                     && (e.key === ' ' || e.key === 'Enter')
+        ) {
             e.preventDefault();
-            this.props._onRemovePrivateMessageRecipient();
+            if (this.props._lobbyChatIsActive && this.props._onHideLobbyChatRecipient) {
+                this.props._onHideLobbyChatRecipient();
+            } else if (this.props._onRemovePrivateMessageRecipient) {
+                this.props._onRemovePrivateMessageRecipient();
+            }
         }
     }
 
@@ -50,9 +57,10 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
      * @inheritdoc
      */
     render() {
-        const { _privateMessageRecipient } = this.props;
+        const { _privateMessageRecipient, _lobbyChatIsActive,
+            _lobbyChatMessageRecipient, _visible } = this.props;
 
-        if (!_privateMessageRecipient) {
+        if ((!_privateMessageRecipient && !_lobbyChatIsActive) || !_visible) {
             return null;
         }
 
@@ -60,16 +68,18 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
 
         return (
             <div
+                className = { _lobbyChatIsActive ? 'lobby-chat-recipient' : '' }
                 id = 'chat-recipient'
                 role = 'alert'>
                 <span>
-                    { t('chat.messageTo', {
-                        recipient: _privateMessageRecipient
+                    { t(_lobbyChatIsActive ? 'chat.lobbyChatMessageTo' : 'chat.messageTo', {
+                        recipient: _lobbyChatIsActive ? _lobbyChatMessageRecipient : _privateMessageRecipient
                     }) }
                 </span>
                 <div
                     aria-label = { t('dialog.close') }
-                    onClick = { this.props._onRemovePrivateMessageRecipient }
+                    onClick = { _lobbyChatIsActive
+                        ? this.props._onHideLobbyChatRecipient : this.props._onRemovePrivateMessageRecipient }
                     onKeyPress = { this._onKeyPress }
                     role = 'button'
                     tabIndex = { 0 }>

@@ -65,6 +65,8 @@
         "today": "Bugün"
     },
     "chat": {
+        "lobbyChatNotice": "{{recipient}} için lobi mesajı",
+        "lobbyChatMessageTo": "{{recipient}} adlı kişiye lobi mesajı",
         "enter": "Odaya gir",
         "error": "Hata: Mesajınız gönderilmedi. Neden: {{error}}",
         "fieldPlaceHolder": "Mesajınızı buraya yazın",
@@ -527,6 +529,8 @@
         "admitAll": "Hepsini kabul et",
         "allow": "İzin ver",
         "backToKnockModeButton": "Parola yok, bunun yerine katılmayı isteyin",
+        "lobbyChatStartedNotification": "{{moderator}} {{attendee}} adlı kişiyle lobi mesajlaşması başlattı",
+        "lobbyChatStartedTitle": "{{moderator}} sizinle lobi mesajlaşması başlattı",
         "dialogTitle": "Lobi modu",
         "disableDialogContent": "Lobi modu şu anda etkin. Bu özellik, istenmeyen katılımcıların toplantınıza katılamamasını sağlar. Devre dışı bırakmak istiyor musunuz?",
         "disableDialogSubmit": "Devre Dışı",

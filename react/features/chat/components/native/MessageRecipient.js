@@ -11,7 +11,7 @@ import { type StyleType } from '../../../base/styles';
 import {
     setParams
 } from '../../../conference/components/native/ConferenceNavigationContainerRef';
-import { setPrivateMessageRecipient } from '../../actions.any';
+import { setPrivateMessageRecipient, setLobbyChatActiveState } from '../../actions.any';
 import AbstractMessageRecipient, {
     type Props as AbstractProps
 } from '../AbstractMessageRecipient';
@@ -32,6 +32,17 @@ type Props = AbstractProps & {
      * The participant object set for private messaging.
      */
     privateMessageRecipient: Object,
+
+
+    /**
+     * Is lobby messaging active.
+     */
+     lobbyChatIsActive: boolean,
+
+     /**
+      * The participant string for lobby chat messaging.
+      */
+     lobbyChatMessageRecipient: Object,
 };
 
 /**
@@ -48,6 +59,7 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
         super(props);
 
         this._onResetPrivateMessageRecipient = this._onResetPrivateMessageRecipient.bind(this);
+        this._onResetLobbyChatMessageRecipient = this._onResetLobbyChatMessageRecipient.bind(this);
     }
 
     _onResetPrivateMessageRecipient: () => void;
@@ -67,6 +79,19 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
         });
     }
 
+    _onResetLobbyChatMessageRecipient: () => void;
+
+    /**
+     * Resets private message recipient from state.
+     *
+     * @returns {void}
+     */
+    _onResetLobbyChatMessageRecipient() {
+        const { dispatch } = this.props;
+
+        dispatch(setLobbyChatActiveState(false));
+    }
+
     /**
      * Implements {@code PureComponent#render}.
      *
@@ -74,7 +99,27 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const { _styles, privateMessageRecipient, t } = this.props;
+        const { _styles, privateMessageRecipient, t,
+            lobbyChatIsActive, lobbyChatMessageRecipient } = this.props;
+
+
+        if (lobbyChatIsActive) {
+            return (
+                <View style = { _styles.lobbyChatMessageRecipientContainer }>
+                    <Text style = { _styles.messageRecipientText }>
+                        { t('chat.lobbyChatMessageTo', {
+                            recipient: lobbyChatMessageRecipient.name
+                        }) }
+                    </Text>
+                    <TouchableHighlight
+                        onPress = { this._onResetLobbyChatMessageRecipient }>
+                        <Icon
+                            src = { IconCancelSelection }
+                            style = { _styles.messageRecipientCancelIcon } />
+                    </TouchableHighlight>
+                </View>
+            );
+        }
 
         if (!privateMessageRecipient) {
             return null;
@@ -105,8 +150,12 @@ class MessageRecipient extends AbstractMessageRecipient<Props> {
  * @returns {Props}
  */
 function _mapStateToProps(state) {
+    const { lobbyChatMessageRecipient, lobbyChatIsActive } = state['features/chat'];
+
     return {
-        _styles: ColorSchemeRegistry.get(state, 'Chat')
+        _styles: ColorSchemeRegistry.get(state, 'Chat'),
+        lobbyChatIsActive,
+        lobbyChatMessageRecipient
     };
 }
 

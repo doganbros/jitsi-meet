@@ -19,6 +19,7 @@ export default [
     'audioLevelsInterval',
     'audioQuality',
     'autoKnockLobby',
+    'enableLobbyChat',
     'apiLogLevels',
     'avgRtpStatsN',
     'backgroundAlpha',
