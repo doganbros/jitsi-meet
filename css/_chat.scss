@@ -87,7 +87,7 @@
     }
     
     &.lobby-chat-recipient {
-        background-color: $lobbyChatMessageBackgroundColor;
+        background-color: $chatLobbyMessageBackgroundColor;
     }
 }
 
@@ -459,8 +459,8 @@
             &.privatemessage {
                 background-color: $chatPrivateMessageBackgroundColor;
             }
-            &.lobbychatmessage {
-                background-color: $lobbyChatMessageBackgroundColor;
+            &.lobbymessage {
+                background-color: $chatLobbyMessageBackgroundColor;
             }
         }
 
@@ -502,7 +502,7 @@
                 padding: 5px;
 
                 &.lobbychatmessageactions {
-                    border-left-color: $lobbyChatActionSeparatorColor;
+                    border-left-color: $chatLobbyActionsSeparatorColor;
                 }
 
                 .toolbox-icon {
@@ -522,8 +522,8 @@
         &.privatemessage {
             background-color: $chatPrivateMessageBackgroundColor;
         }
-        &.lobbychatmessage {
-            background-color: $lobbyChatMessageBackgroundColor;
+        &.lobbymessage {
+            background-color: $chatLobbyMessageBackgroundColor;
         }
     }
 }

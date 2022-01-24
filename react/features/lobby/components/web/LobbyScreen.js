@@ -52,7 +52,7 @@ class LobbyScreen extends AbstractLobbyScreen<Props> {
     componentDidUpdate(prevProps) {
         if (this.props._lobbyChatMessages !== prevProps._lobbyChatMessages) {
             this._scrollMessageContainerToBottom(true);
-        } else if (this.props._lobbyChatIsActive && !prevProps._lobbyChatIsActive) {
+        } else if (this.props._isLobbyChatActive && !prevProps._isLobbyChatActive) {
             this._scrollMessageContainerToBottom(false);
         }
     }
@@ -70,7 +70,7 @@ class LobbyScreen extends AbstractLobbyScreen<Props> {
                 className = 'lobby-screen'
                 showCopyUrlButton = { showCopyUrlButton }
                 showDeviceStatus = { _deviceStatusVisible }
-                title = { t(this._getScreenTitleKey(), { moderator: this.props._lobbyChatMessageRecipient }) }>
+                title = { t(this._getScreenTitleKey(), { moderator: this.props._lobbyMessageRecipient }) }>
                 { this._renderContent() }
             </PreMeetingScreen>
         );
@@ -108,12 +108,12 @@ class LobbyScreen extends AbstractLobbyScreen<Props> {
      * @inheritdoc
      */
     _renderJoining() {
-        const { _lobbyChatIsActive } = this.props;
+        const { _isLobbyChatActive } = this.props;
 
         return (
             <div className = 'lobby-screen-content'>
-                {_lobbyChatIsActive
-                    ? this._renderLobbyChatChat()
+                {_isLobbyChatActive
+                    ? this._renderLobbyChat()
                     : (
                         <>
                             <div className = 'spinner'>
@@ -131,15 +131,15 @@ class LobbyScreen extends AbstractLobbyScreen<Props> {
 
 
     /** ....................
-     * Renders the chat widget to chat with the moderator before allowed in.
+     * Renders the widget to chat with the moderator before allowed in.
      *
      * @inheritdoc
      */
-    _renderLobbyChatChat() {
+    _renderLobbyChat() {
         const { _lobbyChatMessages } = this.props;
 
         return (
-            <div className = 'lobby chat-chat-container'>
+            <div className = 'lobby-chat-container'>
                 <MessageContainer
                     messages = { _lobbyChatMessages }
                     ref = { this._messageContainerRef } />

@@ -13,7 +13,7 @@ export type Props = AbstractButtonProps & {
     /**
     * True if the message is a lobby chat message.
     */
-    isLobbyChat: boolean,
+    isLobbyMessage: boolean,
 
     /**
      * The ID of the participant that the message is to be sent.
@@ -57,9 +57,9 @@ class PrivateMessageButton extends AbstractButton<Props, any> {
      * @returns {void}
      */
     _handleClick() {
-        const { _participant, participantID, dispatch, isLobbyChat } = this.props;
+        const { _participant, participantID, dispatch, isLobbyMessage } = this.props;
 
-        if (isLobbyChat) {
+        if (isLobbyMessage) {
             dispatch(handleLobbyChatInitialized(participantID));
         } else {
             dispatch(openChat(_participant));

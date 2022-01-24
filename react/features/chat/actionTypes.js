@@ -91,10 +91,10 @@ export const SET_IS_POLL_TAB_FOCUSED = 'SET_IS_POLL_TAB_FOCUSED';
  *
  * {
  *     participant: Object,
- *     type: SET_LOBBY_CHAT_MESSAGE_RECIPIENT
+ *     type: SET_LOBBY_CHAT_RECIPIENT
  * }
  */
- export const SET_LOBBY_CHAT_MESSAGE_RECIPIENT = 'SET_LOBBY_CHAT_MESSAGE_RECIPIENT';
+ export const SET_LOBBY_CHAT_RECIPIENT = 'SET_LOBBY_CHAT_RECIPIENT';
 
  /**
   * The type of action sets the state of lobby messaging status.
@@ -107,7 +107,7 @@ export const SET_IS_POLL_TAB_FOCUSED = 'SET_IS_POLL_TAB_FOCUSED';
  export const SET_LOBBY_CHAT_ACTIVE_STATE = 'SET_LOBBY_CHAT_ACTIVE_STATE';
  
  /**
-  * The type of action removes the lobby messaging from with participant.
+  * The type of action removes the lobby messaging from participant.
   *
   * {
   *     type: REMOVE_LOBBY_CHAT_PARTICIPANT

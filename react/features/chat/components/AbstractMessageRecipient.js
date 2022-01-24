@@ -19,31 +19,28 @@ export type Props = {
     _onRemovePrivateMessageRecipient: Function,
 
     /**
-    * Function to make the lobby message receipient inactive.
-    */
+     * Function to make the lobby message receipient inactive.
+     */
     _onHideLobbyChatRecipient: Function,
-
 
     /**
      * The name of the message recipient, if any.
      */
     _privateMessageRecipient: ?string,
 
-
     /**
- * Is lobby messaging active.
- */
-    _lobbyChatIsActive: boolean,
+     * Is lobby messaging active.
+     */
+    _isLobbyChatActive: boolean,
 
     /**
      * The name of the lobby message recipient, if any.
      */
-    _lobbyChatMessageRecipient: ?string,
-
+    _lobbyMessageRecipient: ?string,
 
     /**
-    * Shows widget if it is necessary.
-    */
+     * Shows widget if it is necessary.
+     */
     _visible: boolean;
 };
 
@@ -78,14 +75,14 @@ export function _mapDispatchToProps(dispatch: Function): $Shape<Props> {
  * @returns {Props}
  */
 export function _mapStateToProps(state: Object): $Shape<Props> {
-    const { privateMessageRecipient, lobbyChatMessageRecipient, lobbyChatIsActive } = state['features/chat'];
+    const { privateMessageRecipient, lobbyMessageRecipient, isLobbyChatActive } = state['features/chat'];
 
     return {
         _privateMessageRecipient:
             privateMessageRecipient ? getParticipantDisplayName(state, privateMessageRecipient.id) : undefined,
-        _lobbyChatIsActive: lobbyChatIsActive,
-        _lobbyChatMessageRecipient:
-                lobbyChatIsActive && lobbyChatMessageRecipient ? lobbyChatMessageRecipient.name : undefined,
-        _visible: lobbyChatIsActive ? isLocalParticipantModerator(state) : true
+        _isLobbyChatActive: isLobbyChatActive,
+        _lobbyMessageRecipient:
+                isLobbyChatActive && lobbyMessageRecipient ? lobbyMessageRecipient.name : undefined,
+        _visible: isLobbyChatActive ? isLocalParticipantModerator(state) : true
     };
 }

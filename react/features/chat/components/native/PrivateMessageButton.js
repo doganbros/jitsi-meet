@@ -13,9 +13,9 @@ import { screen } from '../../../conference/components/native/routes';
 export type Props = AbstractButtonProps & {
 
     /**
- * True if message is a lobby chat message.
- */
-    isLobbyChat: boolean,
+     * True if message is a lobby chat message.
+     */
+    isLobbyMessage: boolean,
 
     /**
      * The Redux Dispatch function.
@@ -64,7 +64,7 @@ class PrivateMessageButton extends AbstractButton<Props, any> {
      * @returns {void}
      */
     _handleClick() {
-        if (this.props.isLobbyChat) {
+        if (this.props.isLobbyMessage) {
             this.props.dispatch(handleLobbyChatInitialized(this.props.participantID));
         }
         this.props._isPollsDisabled
@@ -102,13 +102,13 @@ class PrivateMessageButton extends AbstractButton<Props, any> {
 export function _mapStateToProps(state: Object, ownProps: Props): $Shape<Props> {
     const enabled = getFeatureFlag(state, CHAT_ENABLED, true);
     const { disablePolls } = state['features/base/config'];
-    const { visible = enabled, isLobbyChat } = ownProps;
+    const { visible = enabled, isLobbyMessage } = ownProps;
 
     return {
         _isPollsDisabled: disablePolls,
         _participant: getParticipantById(state, ownProps.participantID),
         visible,
-        isLobbyChat
+        isLobbyMessage
     };
 }
 

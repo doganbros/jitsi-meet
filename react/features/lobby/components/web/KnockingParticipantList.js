@@ -30,8 +30,8 @@ class KnockingParticipantList extends AbstractKnockingParticipantList<Props> {
      * @inheritdoc
      */
     render() {
-        const { _participants, _visible, _lobbyChatIsActive,
-            _lobbyChatMessageRecipient, _lobbyLocalId, _enableLobbyChat, t }
+        const { _participants, _visible, _isLobbyChatActive,
+            _lobbyMessageRecipient, _lobbyLocalId, _enableLobbyChat, t }
             = this.props;
 
         if (!_visible) {
@@ -46,9 +46,9 @@ class KnockingParticipantList extends AbstractKnockingParticipantList<Props> {
                 <NotificationWithParticipants
                     approveButtonText = { t('lobby.allow') }
                     enableLobbyChat = { _enableLobbyChat }
-                    lobbyChatIsActive = { _lobbyChatIsActive }
-                    lobbyChatMessageRecipient = { _lobbyChatMessageRecipient }
+                    isLobbyChatActive = { _isLobbyChatActive }
                     lobbyLocalId = { _lobbyLocalId }
+                    lobbyMessageRecipient = { _lobbyMessageRecipient }
                     onApprove = { approveKnockingParticipant }
                     onHandleLobbyChatInitialized = { handleLobbyChatInitialized }
                     onReject = { rejectKnockingParticipant }

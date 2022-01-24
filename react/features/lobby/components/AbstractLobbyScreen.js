@@ -36,12 +36,12 @@ export type Props = {
     /**
      * Name of the lobby chat recipient.
      */
-    _lobbyChatMessageRecipient: string,
+    _lobbyMessageRecipient: string,
 
     /**
      * True if moderator initiated a chat session with the participant.
      */
-    _lobbyChatIsActive: boolean,
+    _isLobbyChatActive: boolean,
 
     /**
      * The name of the meeting we're about to join.
@@ -180,7 +180,7 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
         const passwordPrompt = screenState === SCREEN_STATES.PASSWORD;
 
         return !passwordPrompt && this.props._knocking
-            ? this.props._lobbyChatIsActive ? 'lobby.lobbyChatStartedTitle' : 'lobby.joiningTitle'
+            ? this.props._isLobbyChatActive ? 'lobby.lobbyChatStartedTitle' : 'lobby.joiningTitle'
             : passwordPrompt ? 'lobby.enterPasswordTitle' : 'lobby.joinTitle';
     }
 
@@ -424,14 +424,14 @@ export function _mapStateToProps(state: Object): $Shape<Props> {
     const showCopyUrlButton = inviteEnabledFlag || !disableInviteFunctions;
     const deviceStatusVisible = isDeviceStatusVisible(state);
     const { membersOnly } = state['features/base/conference'];
-    const { lobbyChatIsActive, lobbyChatMessageRecipient, messages } = state['features/chat'];
+    const { isLobbyChatActive, lobbyMessageRecipient, messages } = state['features/chat'];
 
     return {
         _deviceStatusVisible: deviceStatusVisible,
         _knocking: knocking,
         _lobbyChatMessages: messages,
-        _lobbyChatMessageRecipient: lobbyChatMessageRecipient?.name,
-        _lobbyChatIsActive: lobbyChatIsActive,
+        _lobbyMessageRecipient: lobbyMessageRecipient?.name,
+        _isLobbyChatActive: isLobbyChatActive,
         _meetingName: getConferenceName(state),
         _membersOnlyConference: membersOnly,
         _participantEmail: localParticipant?.email,

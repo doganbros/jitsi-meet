@@ -139,19 +139,19 @@ MiddlewareRegistry.register(store => next => action => {
             } else {
                 // Sending the message if privacy notice doesn't need to be shown.
 
-                const { privateMessageRecipient, lobbyChatIsActive, lobbyChatMessageRecipient }
+                const { privateMessageRecipient, isLobbyChatActive, lobbyMessageRecipient }
                     = state['features/chat'];
 
                 if (typeof APP !== 'undefined') {
                     APP.API.notifySendingChatMessage(action.message, Boolean(privateMessageRecipient));
                 }
 
-                if (lobbyChatIsActive && lobbyChatMessageRecipient) {
-                    conference.sendPrivateLobbyMessage(lobbyChatMessageRecipient.id, {
+                if (isLobbyChatActive && lobbyMessageRecipient) {
+                    conference.sendPrivateLobbyMessage(lobbyMessageRecipient.id, {
                         type: LOBBY_CHAT_MESSAGE,
                         message: action.message
                     });
-                    _persistSentPrivateMessage(store, lobbyChatMessageRecipient.id, action.message, true);
+                    _persistSentPrivateMessage(store, lobbyMessageRecipient.id, action.message, true);
                 } else if (privateMessageRecipient) {
                     conference.sendPrivateTextMessage(privateMessageRecipient.id, action.message);
                     _persistSentPrivateMessage(store, privateMessageRecipient.id, action.message);
@@ -307,7 +307,7 @@ function _handleChatError({ dispatch }, error) {
  * @param {string} participantId - The participant id.
  * @returns {Function}
  */
-export function handleLobbyChatMessageReceived(message: string, participantId: string) {
+export function handleLobbyMessageReceived(message: string, participantId: string) {
     return async (dispatch: Dispatch<any>, getState: Function) => {
         _handleReceivedMessage({ dispatch,
             getState }, { id: participantId,
@@ -328,10 +328,10 @@ export function handleLobbyChatMessageReceived(message: string, participantId: s
  */
 function getLobbyChatDisplayName(state, id) {
     const { knockingParticipants } = state['features/lobby'];
-    const { lobbyChatMessageRecipient } = state['features/chat'];
+    const { lobbyMessageRecipient } = state['features/chat'];
 
-    if (id === lobbyChatMessageRecipient.id) {
-        return lobbyChatMessageRecipient.name;
+    if (id === lobbyMessageRecipient.id) {
+        return lobbyMessageRecipient.name;
     }
 
     const knockingParticipant = knockingParticipants.find(p => p.id === id);
@@ -437,7 +437,7 @@ function _persistSentPrivateMessage({ dispatch, getState }, recipientID, message
     const state = getState();
     const localParticipant = getLocalParticipant(state);
     const displayName = getParticipantDisplayName(state, localParticipant.id);
-    const { lobbyChatMessageRecipient } = state['features/chat'];
+    const { lobbyMessageRecipient } = state['features/chat'];
 
     dispatch(addMessage({
         displayName,
@@ -448,7 +448,7 @@ function _persistSentPrivateMessage({ dispatch, getState }, recipientID, message
         privateMessage: !isLobbyPrivateMessage,
         lobbyChat: isLobbyPrivateMessage,
         recipient: isLobbyPrivateMessage
-            ? lobbyChatMessageRecipient && lobbyChatMessageRecipient.name
+            ? lobbyMessageRecipient && lobbyMessageRecipient.name
             : getParticipantDisplayName(getState, recipientID),
         timestamp: Date.now()
     }));

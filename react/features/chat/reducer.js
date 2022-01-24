@@ -12,7 +12,7 @@ import {
     OPEN_CHAT,
     SET_PRIVATE_MESSAGE_RECIPIENT,
     SET_IS_POLL_TAB_FOCUSED,
-    SET_LOBBY_CHAT_MESSAGE_RECIPIENT,
+    SET_LOBBY_CHAT_RECIPIENT,
     SET_LOBBY_CHAT_ACTIVE_STATE,
     REMOVE_LOBBY_CHAT_PARTICIPANT
 } from './actionTypes';
@@ -25,8 +25,8 @@ const DEFAULT_STATE = {
     messages: [],
     nbUnreadMessages: 0,
     privateMessageRecipient: undefined,
-    lobbyChatMessageRecipient: undefined,
-    lobbyChatIsActive: false
+    lobbyMessageRecipient: undefined,
+    isLobbyChatActive: false
 };
 
 ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
@@ -117,7 +117,7 @@ ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
             lastReadMessage: state.messages[
                 navigator.product === 'ReactNative' ? 0 : state.messages.length - 1],
             privateMessageRecipient: action.participant,
-            lobbyChatIsActive: false
+            isLobbyChatActive: false
         };
 
     case SET_IS_POLL_TAB_FOCUSED: {
@@ -127,18 +127,18 @@ ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
             nbUnreadMessages: 0
         }; }
 
-    case SET_LOBBY_CHAT_MESSAGE_RECIPIENT:
+    case SET_LOBBY_CHAT_RECIPIENT:
         return {
             ...state,
-            lobbyChatIsActive: true,
-            lobbyChatMessageRecipient: action.participant,
+            isLobbyChatActive: true,
+            lobbyMessageRecipient: action.participant,
             privateMessageRecipient: undefined,
             isOpen: action.open
         };
     case SET_LOBBY_CHAT_ACTIVE_STATE:
         return {
             ...state,
-            lobbyChatIsActive: action.payload,
+            isLobbyChatActive: action.payload,
             isOpen: action.payload || state.isOpen,
             privateMessageRecipient: undefined
         };
@@ -152,9 +152,9 @@ ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
 
                 return true;
             }),
-            isOpen: state.isOpen && state.lobbyChatIsActive ? false : state.isOpen,
-            lobbyChatIsActive: false,
-            lobbyChatMessageRecipient: undefined
+            isOpen: state.isOpen && state.isLobbyChatActive ? false : state.isOpen,
+            isLobbyChatActive: false,
+            lobbyMessageRecipient: undefined
         };
     }
 

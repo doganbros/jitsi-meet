@@ -34,12 +34,12 @@ export type Props = {
      /**
       * Checks the state of current lobby messaging.
       */
-      _lobbyChatIsActive: boolean,
+      _isLobbyChatActive: boolean,
 
      /**
       * The current lobby chat recipient.
       */
-      _lobbyChatMessageRecipient: Object,
+      _lobbyMessageRecipient: Object,
 
      /**
       * The lobby local id of the current moderator.
@@ -91,7 +91,7 @@ export default class AbstractKnockingParticipantList<P: Props = Props> extends P
     _onInitializeLobbyChat: (string) => Function;
 
     /**
-     * Function that constructs a callback for the lobby chat chat button.
+     * Function that constructs a callback for the lobby chat button.
      *
      * @param {string} id - The id of the knocking participant.
      * @returns {Function}
@@ -116,7 +116,7 @@ export default class AbstractKnockingParticipantList<P: Props = Props> extends P
 export function mapStateToProps(state: Object): $Shape<Props> {
     const lobbyEnabled = getLobbyEnabled(state);
     const knockingParticipants = getKnockingParticipants(state);
-    const { lobbyChatIsActive, lobbyChatMessageRecipient } = state['features/chat'];
+    const { isLobbyChatActive, lobbyMessageRecipient } = state['features/chat'];
     const { conference } = state['features/base/conference'];
     const { enableLobbyChat = true } = state['features/base/config'];
     const { disablePolls } = state['features/base/config'];
@@ -125,8 +125,8 @@ export function mapStateToProps(state: Object): $Shape<Props> {
         _participants: knockingParticipants,
         _visible: lobbyEnabled && isLocalParticipantModerator(state)
           && Boolean(knockingParticipants && knockingParticipants.length),
-        _lobbyChatIsActive: lobbyChatIsActive,
-        _lobbyChatMessageRecipient: lobbyChatMessageRecipient,
+        _isLobbyChatActive: isLobbyChatActive,
+        _lobbyMessageRecipient: lobbyMessageRecipient,
         _lobbyLocalId: conference && conference.getLobbyLocalId(),
         _enableLobbyChat: enableLobbyChat,
         _isPollsDisabled: disablePolls

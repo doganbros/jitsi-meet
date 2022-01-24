@@ -30,10 +30,10 @@ class LobbyScreen extends AbstractLobbyScreen {
 
         return (
             <JitsiScreen
-                style = { this.props._lobbyChatIsActive
+                style = { this.props._isLobbyChatActive
                     ? styles.lobbyChatWrapper
                     : styles.contentWrapper }>
-                {this.props._lobbyChatIsActive
+                {this.props._isLobbyChatActive
                     ? this._renderLobbyChat()
                     : <SafeAreaView>
                         <Text style = { styles.dialogTitle }>
@@ -74,7 +74,7 @@ class LobbyScreen extends AbstractLobbyScreen {
     _renderContent: () => React$Element<*>;
 
     /**
-     * Renders the lobby chat chat.
+     * Renders the lobby chat.
      *
      * @inheritdoc
      */
@@ -84,7 +84,7 @@ class LobbyScreen extends AbstractLobbyScreen {
         return (
             <>
                 <Text style = { styles.dialogTitle }>
-                    { t(this._getScreenTitleKey(), { moderator: this.props._lobbyChatMessageRecipient }) }
+                    { t(this._getScreenTitleKey(), { moderator: this.props._lobbyMessageRecipient }) }
                 </Text>
                 <MessageContainer messages = { this.props._lobbyChatMessages } />
                 <ChatInputBar onSend = { this._onSendMessage } />

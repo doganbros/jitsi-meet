@@ -11,7 +11,7 @@ import {
 import { getLocalParticipant } from '../base/participants';
 import { onLobbyChatInitialized, removeLobbyChatParticipant, sendMessage } from '../chat/actions.any';
 import { LOBBY_CHAT_MESSAGE } from '../chat/constants';
-import { handleLobbyChatMessageReceived } from '../chat/middleware';
+import { handleLobbyMessageReceived } from '../chat/middleware';
 import { showNotification } from '../notifications/actions';
 
 import {
@@ -334,7 +334,7 @@ export function maybeSetLobbyChatMessageListener() {
 }
 
 /**
- * Action to handle the event when a moderator leaves.
+ * Action to handle the event when a moderator leaves during lobby chat.
  *
  * @param {string} participantId - The participant id of the moderator who left.
  * @returns {Function}
@@ -343,10 +343,10 @@ export function updateLobbyParticipantOnModeratorLeave(participantId: string) {
     return async (dispatch: Dispatch<any>, getState: Function) => {
         const state = getState();
         const { knocking, knockingParticipants } = state['features/lobby'];
-        const { lobbyChatMessageRecipient } = state['features/chat'];
+        const { lobbyMessageRecipient } = state['features/chat'];
         const { conference } = state['features/base/conference'];
 
-        if (knocking && lobbyChatMessageRecipient && lobbyChatMessageRecipient.id === participantId) {
+        if (knocking && lobbyMessageRecipient && lobbyMessageRecipient.id === participantId) {
             return dispatch(removeLobbyChatParticipant(true));
         }
 
@@ -385,7 +385,7 @@ export function setLobbyChatListener() {
 
         conference.setLobbyMessageListener((message: Object, participantId: string) => {
             if (message.type === LOBBY_CHAT_MESSAGE) {
-                return dispatch(handleLobbyChatMessageReceived(message.message, participantId));
+                return dispatch(handleLobbyMessageReceived(message.message, participantId));
             }
             if (message.type === LOBBY_CHAT_INITIALIZED) {
                 return dispatch(handleLobbyChatInitialized(message));

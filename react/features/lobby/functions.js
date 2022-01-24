@@ -52,7 +52,7 @@ export function showLobbyChatIcon(
 ) {
     const { participant,
         lobbyLocalId,
-        lobbyChatIsActive,
+        isLobbyChatActive,
         lobbyChatRecipient,
         enableLobbyChat } = info;
 
@@ -60,14 +60,14 @@ export function showLobbyChatIcon(
         return false;
     }
 
-    if (!lobbyChatIsActive
+    if (!isLobbyChatActive
     && (!participant.chattingWithModerator
     || participant.chattingWithModerator === lobbyLocalId)
     ) {
         return true;
     }
 
-    if (lobbyChatIsActive && lobbyChatRecipient
+    if (isLobbyChatActive && lobbyChatRecipient
     && participant.id !== lobbyChatRecipient.id
         && (!participant.chattingWithModerator
             || participant.chattingWithModerator === lobbyLocalId)) {

@@ -29,7 +29,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
                 tabIndex = { -1 }>
                 <div
                     className = { `chatmessage ${message.privateMessage ? 'privatemessage' : ''} ${
-                        message.lobbyChat ? 'lobbychatmessage' : ''}` }>
+                        message.lobbyChat ? 'lobbymessage' : ''}` }>
                     <div className = 'replywrapper'>
                         <div className = 'messagecontent'>
                             { this.props.showDisplayName && this._renderDisplayName() }
@@ -52,7 +52,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
                                     className = { `messageactions ${
                                         message.lobbyChat ? 'lobbychatmessageactions' : ''}` }>
                                     <PrivateMessageButton
-                                        isLobbyChat = { message.lobbyChat }
+                                        isLobbyMessage = { message.lobbyChat }
                                         participantID = { message.id }
                                         reply = { true }
                                         showLabel = { false } />

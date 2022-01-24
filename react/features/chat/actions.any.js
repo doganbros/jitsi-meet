@@ -13,7 +13,7 @@ import {
     SEND_MESSAGE,
     SET_PRIVATE_MESSAGE_RECIPIENT,
     SET_IS_POLL_TAB_FOCUSED,
-    SET_LOBBY_CHAT_MESSAGE_RECIPIENT,
+    SET_LOBBY_CHAT_RECIPIENT,
     REMOVE_LOBBY_CHAT_PARTICIPANT,
     SET_LOBBY_CHAT_ACTIVE_STATE
 } from './actionTypes';
@@ -163,7 +163,7 @@ export function onLobbyChatInitialized(lobbyChatInititializedInfo: Object) {
 
         if (lobbyChatInititializedInfo.moderator.id === lobbyLocalId) {
             dispatch({
-                type: SET_LOBBY_CHAT_MESSAGE_RECIPIENT,
+                type: SET_LOBBY_CHAT_RECIPIENT,
                 participant: lobbyChatInititializedInfo.attendee,
                 open: true
             });
@@ -171,7 +171,7 @@ export function onLobbyChatInitialized(lobbyChatInititializedInfo: Object) {
 
         if (lobbyChatInititializedInfo.attendee.id === lobbyLocalId) {
             return dispatch({
-                type: SET_LOBBY_CHAT_MESSAGE_RECIPIENT,
+                type: SET_LOBBY_CHAT_RECIPIENT,
                 participant: lobbyChatInititializedInfo.moderator,
                 open: false
             });
@@ -221,12 +221,12 @@ export function handleLobbyChatInitialized(participantId: string) {
         const state = getState();
         const conference = state['features/base/conference'].conference;
         const { knockingParticipants } = state['features/lobby'];
-        const { lobbyChatMessageRecipient } = state['features/chat'];
+        const { lobbyMessageRecipient } = state['features/chat'];
         const me = getLocalParticipant(state);
         const lobbyLocalId = conference.getLobbyLocalId();
 
 
-        if (lobbyChatMessageRecipient && lobbyChatMessageRecipient.id === participantId) {
+        if (lobbyMessageRecipient && lobbyMessageRecipient.id === participantId) {
             return dispatch(setLobbyChatActiveState(true));
         }
 
@@ -234,7 +234,7 @@ export function handleLobbyChatInitialized(participantId: string) {
 
         if (attendee && attendee.chattingWithModerator === lobbyLocalId) {
             return dispatch({
-                type: SET_LOBBY_CHAT_MESSAGE_RECIPIENT,
+                type: SET_LOBBY_CHAT_RECIPIENT,
                 participant: attendee,
                 open: true
             });

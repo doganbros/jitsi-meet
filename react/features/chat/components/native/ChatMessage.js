@@ -36,7 +36,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
     render() {
         const { _styles, message } = this.props;
         const localMessage = message.messageType === MESSAGE_TYPE_LOCAL;
-        const { privateMessage } = message;
+        const { privateMessage, lobbyChat } = message;
 
         // Style arrays that need to be updated in various scenarios, such as
         // error messages or others.
@@ -71,6 +71,10 @@ class ChatMessage extends AbstractChatMessage<Props> {
             messageBubbleStyle.push(_styles.privateMessageBubble);
         }
 
+        if (lobbyChat) {
+            messageBubbleStyle.push(_styles.lobbyMessageBubble);
+        }
+
         return (
             <View style = { styles.messageWrapper } >
                 { this._renderAvatar() }
@@ -82,6 +86,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
                                 { replaceNonUnicodeEmojis(this._getMessageText()) }
                             </Linkify>
                             { this._renderPrivateNotice() }
+                            { this._renderLobbyChatNotice() }
                         </View>
                         { this._renderPrivateReplyButton() }
                     </View>
@@ -161,7 +166,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
      *
      * @returns {React$Element<*> | null}
      */
-    __renderLobbyChatNotice() {
+    _renderLobbyChatNotice() {
         const { _styles, message } = this.props;
 
         if (!message.lobbyChat) {
@@ -169,7 +174,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
         }
 
         return (
-            <Text style = { _styles.lobbyChatNotice }>
+            <Text style = { _styles.lobbyMsgNotice }>
                 { this._getLobbyNoticeMessage() }
             </Text>
         );
@@ -191,7 +196,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
         return (
             <View style = { _styles.replyContainer }>
                 <PrivateMessageButton
-                    isLobbyChat = { lobbyChat }
+                    isLobbyMessage = { lobbyChat }
                     participantID = { message.id }
                     reply = { true }
                     showLabel = { false }

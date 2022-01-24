@@ -156,19 +156,6 @@ ColorSchemeRegistry.register('Chat', {
         flex: 1
     },
 
-    lobbyChatNotice: {
-        color: schemeColor('lobbyChatBackground'),
-        fontSize: 11,
-        marginTop: 6
-    },
-
-    lobbyChatMessageRecipientContainer: {
-        alignItems: 'center',
-        backgroundColor: schemeColor('lobbyChatBackground'),
-        flexDirection: 'row',
-        padding: BoxModel.padding
-    },
-
     /**
      * The text node for the display name.
      */
@@ -180,6 +167,23 @@ ColorSchemeRegistry.register('Chat', {
     emptyComponentText: {
         color: BaseTheme.palette.ui05,
         textAlign: 'center'
+    },
+
+    lobbyMessageBubble: {
+        backgroundColor: schemeColor('lobbyMsgBackground')
+    },
+
+    lobbyMsgNotice: {
+        color: schemeColor('lobbyMsgNotice'),
+        fontSize: 11,
+        marginTop: 6
+    },
+
+    lobbyMessageRecipientContainer: {
+        alignItems: 'center',
+        backgroundColor: schemeColor('lobbyMsgBackground'),
+        flexDirection: 'row',
+        padding: BoxModel.padding
     },
 
     localMessageBubble: {

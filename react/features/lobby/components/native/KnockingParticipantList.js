@@ -26,8 +26,8 @@ class KnockingParticipantList extends AbstractKnockingParticipantList {
      * @inheritdoc
      */
     render() {
-        const { _participants, _visible, _lobbyChatIsActive,
-            _lobbyChatMessageRecipient, _lobbyLocalId, _enableLobbyChat, t } = this.props;
+        const { _participants, _visible, _isLobbyChatActive,
+            _lobbyMessageRecipient, _lobbyLocalId, _enableLobbyChat, t } = this.props;
 
         if (!_visible) {
             return null;
@@ -78,8 +78,8 @@ class KnockingParticipantList extends AbstractKnockingParticipantList {
                             {
                                 participant: p,
                                 lobbyLocalId: _lobbyLocalId,
-                                lobbyChatIsActive: _lobbyChatIsActive,
-                                lobbyChatRecipient: _lobbyChatMessageRecipient,
+                                isLobbyChatActive: _isLobbyChatActive,
+                                lobbyChatRecipient: _lobbyMessageRecipient,
                                 enableLobbyChat: _enableLobbyChat
                             }
                         )

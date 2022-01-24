@@ -50,12 +50,12 @@ type Props = {
     /**
      * Checks the state of current lobby messaging.
     */
-    lobbyChatIsActive: boolean,
+    isLobbyChatActive: boolean,
 
     /**
      * The current lobby chat recipient.
      */
-     lobbyChatMessageRecipient: ?Object,
+     lobbyMessageRecipient: ?Object,
 
     /**
      * The lobby local id of the current moderator.
@@ -81,9 +81,9 @@ export default function({
     participants,
     testIdPrefix,
     rejectButtonText,
-    lobbyChatIsActive,
+    isLobbyChatActive,
     onHandleLobbyChatInitialized,
-    lobbyChatMessageRecipient,
+    lobbyMessageRecipient,
     lobbyLocalId,
     enableLobbyChat
 }: Props): React$Element<'ul'> {
@@ -130,8 +130,8 @@ export default function({
                         showLobbyChatIcon({
                             participant: p,
                             lobbyLocalId,
-                            lobbyChatIsActive,
-                            lobbyChatRecipient: lobbyChatMessageRecipient,
+                            isLobbyChatActive,
+                            lobbyChatRecipient: lobbyMessageRecipient,
                             enableLobbyChat
                         })
                             ? (
