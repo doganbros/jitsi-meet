@@ -1,5 +1,7 @@
 // @flow
 
+import { getCurrentConference } from '../base/conference';
+
 /**
 * Selector to return lobby enable state.
 *
@@ -42,37 +44,40 @@ export function getKnockingParticipantsById(state: any) {
 
 
 /**
- * Function that handles the visibility of the lobby chat message icon.
+ * Function that handles the visibility of the lobby chat message.
  *
- * @param {Object} info - Show lobby chat icon options.
- * @returns {boolean}
+ * @param {Object} participant - Lobby Participant.
+ * @returns {Function}
  */
-export function showLobbyChatIcon(
-        info: Object
+export function showLobbyChatButton(
+        participant: Object
 ) {
-    const { participant,
-        lobbyLocalId,
-        isLobbyChatActive,
-        lobbyChatRecipient,
-        enableLobbyChat } = info;
+    return function(state: Object) {
 
-    if (!enableLobbyChat) {
-        return false;
-    }
+        const { enableLobbyChat = true } = state['features/base/config'];
+        const { lobbyMessageRecipient, isLobbyChatActive } = state['features/chat'];
+        const conference = getCurrentConference(state);
 
-    if (!isLobbyChatActive
-    && (!participant.chattingWithModerator
-    || participant.chattingWithModerator === lobbyLocalId)
-    ) {
-        return true;
-    }
+        const lobbyLocalId = conference.getLobbyLocalId();
 
-    if (isLobbyChatActive && lobbyChatRecipient
-    && participant.id !== lobbyChatRecipient.id
+        if (!enableLobbyChat) {
+            return false;
+        }
+
+        if (!isLobbyChatActive
         && (!participant.chattingWithModerator
-            || participant.chattingWithModerator === lobbyLocalId)) {
-        return true;
-    }
+        || participant.chattingWithModerator === lobbyLocalId)
+        ) {
+            return true;
+        }
 
-    return false;
+        if (isLobbyChatActive && lobbyMessageRecipient
+        && participant.id !== lobbyMessageRecipient.id
+            && (!participant.chattingWithModerator
+                || participant.chattingWithModerator === lobbyLocalId)) {
+            return true;
+        }
+
+        return false;
+    };
 }

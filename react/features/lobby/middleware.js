@@ -1,5 +1,6 @@
 // @flow
 
+import i18n from 'i18next';
 import { batch } from 'react-redux';
 
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../base/app';
@@ -13,12 +14,18 @@ import { getFirstLoadableAvatarUrl, getParticipantDisplayName } from '../base/pa
 import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
 import { playSound, registerSound, unregisterSound } from '../base/sounds';
 import { isTestModeEnabled } from '../base/testing';
-import { removeLobbyChatParticipant } from '../chat/actions.any';
+import { handleLobbyChatInitialized, removeLobbyChatParticipant } from '../chat/actions.any';
+import { approveKnockingParticipant, rejectKnockingParticipant } from '../lobby/actions';
 import {
+    LOBBY_NOTIFICATION_ID,
+    NOTIFICATION_ICON,
     NOTIFICATION_TIMEOUT_TYPE,
     NOTIFICATION_TYPE,
+    hideNotification,
     showNotification
 } from '../notifications';
+import { open as openParticipantsPane } from '../participants-pane/actions';
+import { getParticipantsPaneOpen } from '../participants-pane/functions';
 import { shouldAutoKnock } from '../prejoin/functions';
 
 import { KNOCKING_PARTICIPANT_ARRIVED_OR_UPDATED } from './actionTypes';
@@ -34,6 +41,7 @@ import {
 } from './actions';
 import { updateLobbyParticipantOnModeratorLeave } from './actions.any';
 import { KNOCKING_PARTICIPANT_SOUND_ID } from './constants';
+import { getKnockingParticipants, showLobbyChatButton } from './functions';
 import { KNOCKING_PARTICIPANT_FILE } from './sounds';
 
 declare var APP: Object;
@@ -87,6 +95,65 @@ StateListenerRegistry.register(
                         })
                     );
                     dispatch(playSound(KNOCKING_PARTICIPANT_SOUND_ID));
+
+                    const isParticipantsPaneVisible = getParticipantsPaneOpen(getState());
+
+                    if (navigator.product === 'ReactNative' || isParticipantsPaneVisible) {
+                        return;
+                    }
+                    let notificationTitle;
+                    let customActionNameKey;
+                    let customActionHandler;
+                    let descriptionKey;
+                    let icon;
+
+                    const knockingParticipants = getKnockingParticipants(getState());
+                    const firstParticipant = knockingParticipants[0];
+                    const showChat = showLobbyChatButton(firstParticipant)(getState());
+
+                    if (knockingParticipants.length > 1) {
+                        descriptionKey = 'notify.participantsWantToJoin';
+                        notificationTitle = i18n.t('notify.waitingParticipants', {
+                            waitingParticipants: knockingParticipants.length
+                        });
+                        icon = NOTIFICATION_ICON.PARTICIPANTS;
+                        customActionNameKey = [ 'notify.viewLobby' ];
+                        customActionHandler = [ () => batch(() => {
+                            dispatch(hideNotification(LOBBY_NOTIFICATION_ID));
+                            dispatch(openParticipantsPane());
+                        }) ];
+                    } else {
+                        descriptionKey = 'notify.participantWantsToJoin';
+                        notificationTitle = firstParticipant.name;
+                        icon = NOTIFICATION_ICON.PARTICIPANT;
+                        customActionNameKey = [ 'lobby.admit', 'lobby.reject' ];
+                        if (showChat) {
+                            customActionNameKey.push('lobby.chat');
+                        }
+                        customActionHandler = [ () => batch(() => {
+                            dispatch(hideNotification(LOBBY_NOTIFICATION_ID));
+                            dispatch(approveKnockingParticipant(firstParticipant.id));
+                        }),
+                        () => batch(() => {
+                            dispatch(hideNotification(LOBBY_NOTIFICATION_ID));
+                            dispatch(rejectKnockingParticipant(firstParticipant.id));
+                        }) ];
+                        if (showChat) {
+                            customActionHandler.push(() => batch(() => {
+                                dispatch(hideNotification(LOBBY_NOTIFICATION_ID));
+                                dispatch(handleLobbyChatInitialized(firstParticipant.id));
+                            }));
+                        }
+                    }
+                    dispatch(showNotification({
+                        title: notificationTitle,
+                        descriptionKey,
+                        uid: LOBBY_NOTIFICATION_ID,
+                        customActionNameKey,
+                        customActionHandler,
+                        icon
+                    }, NOTIFICATION_TIMEOUT_TYPE.STICKY));
+
                     if (typeof APP !== 'undefined') {
                         APP.API.notifyKnockingParticipant({
                             id,

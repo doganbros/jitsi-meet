@@ -218,6 +218,9 @@ export function removeLobbyChatParticipant(removeLobbyChatMessages: ?boolean) {
  */
 export function handleLobbyChatInitialized(participantId: string) {
     return async (dispatch: Dispatch<any>, getState: Function) => {
+        if (!participantId) {
+            return;
+        }
         const state = getState();
         const conference = state['features/base/conference'].conference;
         const { knockingParticipants } = state['features/lobby'];

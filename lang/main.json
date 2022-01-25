@@ -367,6 +367,7 @@
         "shareVideoTitle": "Share video",
         "shareYourScreen": "Share your screen",
         "shareYourScreenDisabled": "Screen sharing disabled.",
+        "sharedVideoDialogError": "Error: Invalid URL",
         "sharedVideoLinkPlaceholder": "YouTube link or direct video link",
         "startLiveStreaming": "Start live stream",
         "startRecording": "Start recording",
@@ -530,6 +531,7 @@
         "admitAll": "Admit all",
         "allow": "Allow",
         "backToKnockModeButton": "Ask to join",
+        "chat": "Chat",
         "dialogTitle": "Lobby mode",
         "disableDialogContent": "Lobby mode is currently enabled. This feature ensures that unwanted participants can't join your meeting. Do you want to disable it?",
         "disableDialogSubmit": "Disable",
@@ -646,6 +648,8 @@
         "oldElectronClientDescription1": "You appear to be using an old version of the Jitsi Meet client which has known security vulnerabilities. Please make sure you update to our ",
         "oldElectronClientDescription2": "latest build",
         "oldElectronClientDescription3": " now!",
+        "participantWantsToJoin": "Wants to join the meeting",
+        "participantsWantToJoin": "Want to join the meeting",
         "passwordRemovedRemotely": "$t(lockRoomPasswordUppercase) removed by another participant",
         "passwordSetRemotely": "$t(lockRoomPasswordUppercase) set by another participant",
         "raiseHandAction": "Raise hand",
@@ -665,7 +669,9 @@
         "videoMutedRemotelyDescription": "You can always turn it on again.",
         "videoMutedRemotelyTitle": "Your video has been turned off by {{participantDisplayName}}",
         "videoUnmuteBlockedDescription": "Camera unmute and desktop sharing operation have been temporarily blocked because of system limits.",
-        "videoUnmuteBlockedTitle": "Camera unmute and desktop sharing blocked!"
+        "videoUnmuteBlockedTitle": "Camera unmute and desktop sharing blocked!",
+        "viewLobby": "View lobby",
+        "waitingParticipants": "{{waitingParticipants}} people"
     },
     "participantsPane": {
         "actions": {

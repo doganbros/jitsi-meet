@@ -7,8 +7,8 @@ import { getParticipantById } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { AbstractButton, type AbstractButtonProps } from '../../../base/toolbox/components';
 import { handleLobbyChatInitialized } from '../../../chat/actions.any';
-import { navigate } from '../../../conference/components/native/ConferenceNavigationContainerRef';
-import { screen } from '../../../conference/components/native/routes';
+import { navigate } from '../../../mobile/navigation/components/conference/ConferenceNavigationContainerRef';
+import { screen } from '../../../mobile/navigation/routes';
 
 export type Props = AbstractButtonProps & {
 

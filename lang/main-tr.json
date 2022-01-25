@@ -529,6 +529,7 @@
         "admitAll": "Hepsini kabul et",
         "allow": "İzin ver",
         "backToKnockModeButton": "Parola yok, bunun yerine katılmayı isteyin",
+        "chat": "Sohbet et",
         "lobbyChatStartedNotification": "{{moderator}} {{attendee}} adlı kişiyle lobi mesajlaşması başlattı",
         "lobbyChatStartedTitle": "{{moderator}} sizinle lobi mesajlaşması başlattı",
         "dialogTitle": "Lobi modu",
