@@ -14,6 +14,7 @@ import { getFirstLoadableAvatarUrl, getParticipantDisplayName } from '../base/pa
 import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
 import { playSound, registerSound, unregisterSound } from '../base/sounds';
 import { isTestModeEnabled } from '../base/testing';
+import { handleLobbyChatInitialized, removeLobbyChatParticipant } from '../chat/actions.any';
 import { approveKnockingParticipant, rejectKnockingParticipant } from '../lobby/actions';
 import {
     LOBBY_NOTIFICATION_ID,
@@ -35,10 +36,12 @@ import {
     participantIsKnockingOrUpdated,
     setLobbyModeEnabled,
     startKnocking,
-    setPasswordJoinFailed
+    setPasswordJoinFailed,
+    setLobbyMessageListener
 } from './actions';
+import { updateLobbyParticipantOnModeratorLeave } from './actions.any';
 import { KNOCKING_PARTICIPANT_SOUND_ID } from './constants';
-import { getKnockingParticipants } from './functions';
+import { getKnockingParticipants, showLobbyChatButton } from './functions';
 import { KNOCKING_PARTICIPANT_FILE } from './sounds';
 
 declare var APP: Object;
@@ -78,6 +81,9 @@ StateListenerRegistry.register(
         if (conference && !previousConference) {
             conference.on(JitsiConferenceEvents.MEMBERS_ONLY_CHANGED, enabled => {
                 dispatch(setLobbyModeEnabled(enabled));
+                if (enabled) {
+                    dispatch(setLobbyMessageListener());
+                }
             });
 
             conference.on(JitsiConferenceEvents.LOBBY_USER_JOINED, (id, name) => {
@@ -103,6 +109,7 @@ StateListenerRegistry.register(
 
                     const knockingParticipants = getKnockingParticipants(getState());
                     const firstParticipant = knockingParticipants[0];
+                    const showChat = showLobbyChatButton(firstParticipant)(getState());
 
                     if (knockingParticipants.length > 1) {
                         descriptionKey = 'notify.participantsWantToJoin';
@@ -120,6 +127,9 @@ StateListenerRegistry.register(
                         notificationTitle = firstParticipant.name;
                         icon = NOTIFICATION_ICON.PARTICIPANT;
                         customActionNameKey = [ 'lobby.admit', 'lobby.reject' ];
+                        if (showChat) {
+                            customActionNameKey.push('lobby.chat');
+                        }
                         customActionHandler = [ () => batch(() => {
                             dispatch(hideNotification(LOBBY_NOTIFICATION_ID));
                             dispatch(approveKnockingParticipant(firstParticipant.id));
@@ -128,6 +138,12 @@ StateListenerRegistry.register(
                             dispatch(hideNotification(LOBBY_NOTIFICATION_ID));
                             dispatch(rejectKnockingParticipant(firstParticipant.id));
                         }) ];
+                        if (showChat) {
+                            customActionHandler.push(() => batch(() => {
+                                dispatch(hideNotification(LOBBY_NOTIFICATION_ID));
+                                dispatch(handleLobbyChatInitialized(firstParticipant.id));
+                            }));
+                        }
                     }
                     dispatch(showNotification({
                         title: notificationTitle,
@@ -157,7 +173,11 @@ StateListenerRegistry.register(
             });
 
             conference.on(JitsiConferenceEvents.LOBBY_USER_LEFT, id => {
-                dispatch(knockingParticipantLeft(id));
+                batch(() => {
+                    dispatch(knockingParticipantLeft(id));
+                    dispatch(removeLobbyChatParticipant());
+                    dispatch(updateLobbyParticipantOnModeratorLeave(id));
+                });
             });
 
             conference.on(JitsiConferenceEvents.ENDPOINT_MESSAGE_RECEIVED, (origin, sender) =>
