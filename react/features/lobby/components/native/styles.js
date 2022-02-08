@@ -12,6 +12,14 @@ export default {
         paddingVertical: BaseTheme.spacing[2]
     },
 
+    lobbyChatWrapper: {
+        alignItems: 'stretch',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyItems: 'center',
+        height: '100%'
+    },
+
     contentWrapper: {
         alignItems: 'center',
         display: 'flex',
