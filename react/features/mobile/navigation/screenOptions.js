@@ -87,13 +87,14 @@ export const drawerScreenOptions = {
  * Drawer content options.
  */
 export const drawerContentOptions = {
-    drawerActiveBackgroundColor: BaseTheme.palette.ui12,
+    drawerActiveBackgroundColor: BaseTheme.palette.uiBackground,
     drawerActiveTintColor: BaseTheme.palette.screen01Header,
+    drawerInactiveTintColor: BaseTheme.palette.text02,
     drawerLabelStyle: {
         marginLeft: BaseTheme.spacing[2]
     },
     drawerStyle: {
-        backgroundColor: BaseTheme.palette.ui12,
+        backgroundColor: BaseTheme.palette.uiBackground,
         maxWidth: 400,
         width: '75%'
     }
@@ -106,7 +107,7 @@ export const welcomeScreenOptions = {
     ...drawerScreenOptions,
     drawerIcon: ({ focused }) => (
         <Icon
-            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.field01Disabled }
+            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.icon02 }
             size = { 20 }
             src = { IconHome } />
     ),
@@ -122,7 +123,7 @@ export const settingsScreenOptions = {
     ...drawerScreenOptions,
     drawerIcon: ({ focused }) => (
         <Icon
-            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.field01Disabled }
+            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.icon02 }
             size = { 20 }
             src = { IconSettings } />
     ),
@@ -138,7 +139,7 @@ export const termsAndPrivacyScreenOptions = {
     ...drawerScreenOptions,
     drawerIcon: ({ focused }) => (
         <Icon
-            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.field01Disabled }
+            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.icon02 }
             size = { 20 }
             src = { IconInfo } />
     ),
@@ -154,7 +155,7 @@ export const helpScreenOptions = {
     ...drawerScreenOptions,
     drawerIcon: ({ focused }) => (
         <Icon
-            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.field01Disabled }
+            color = { focused ? BaseTheme.palette.screen01Header : BaseTheme.palette.icon02 }
             size = { 20 }
             src = { IconHelp } />
     ),
@@ -185,7 +186,7 @@ export const chatTabBarOptions = {
     tabBarLabelStyle: {
         fontSize: BaseTheme.typography.labelRegular.fontSize
     },
-    tabBarInactiveTintColor: BaseTheme.palette.field02Disabled,
+    tabBarInactiveTintColor: BaseTheme.palette.text01,
     tabBarIndicatorStyle: {
         backgroundColor: BaseTheme.palette.screen01Header
     }
