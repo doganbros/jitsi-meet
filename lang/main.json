@@ -84,7 +84,6 @@
         "error": "Error: your message was not sent. Reason: {{error}}",
         "fieldPlaceHolder": "Type your message here",
         "lobbyChatMessageTo": "Lobby chat message to {{recipient}}",
-        "lobbyChatNotice": "Lobby chat message to {{recipient}}",
         "message": "Message",
         "messageAccessibleTitle": "{{user}} says:",
         "messageAccessibleTitleMe": "me says:",

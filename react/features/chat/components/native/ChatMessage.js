@@ -34,7 +34,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
      * @inheritdoc
      */
     render() {
-        const { _styles, message } = this.props;
+        const { _styles, message, knocking } = this.props;
         const localMessage = message.messageType === MESSAGE_TYPE_LOCAL;
         const { privateMessage, lobbyChat } = message;
 
@@ -71,7 +71,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
             messageBubbleStyle.push(_styles.privateMessageBubble);
         }
 
-        if (lobbyChat) {
+        if (lobbyChat && !knocking) {
             messageBubbleStyle.push(_styles.lobbyMessageBubble);
         }
 
@@ -86,7 +86,6 @@ class ChatMessage extends AbstractChatMessage<Props> {
                                 { replaceNonUnicodeEmojis(this._getMessageText()) }
                             </Linkify>
                             { this._renderPrivateNotice() }
-                            { this._renderLobbyChatNotice() }
                         </View>
                         { this._renderPrivateReplyButton() }
                     </View>
@@ -97,8 +96,6 @@ class ChatMessage extends AbstractChatMessage<Props> {
     }
 
     _getFormattedTimestamp: () => string;
-
-    _getLobbyNoticeMessage: () => string;
 
     _getMessageText: () => string;
 
@@ -148,34 +145,15 @@ class ChatMessage extends AbstractChatMessage<Props> {
      * @returns {React$Element<*> | null}
      */
     _renderPrivateNotice() {
-        const { _styles, message } = this.props;
+        const { _styles, message, knocking } = this.props;
 
-        if (!message.privateMessage) {
+        if (!(message.privateMessage || (message.lobbyChat && !knocking))) {
             return null;
         }
 
         return (
-            <Text style = { _styles.privateNotice }>
+            <Text style = { message.lobbyChat ? _styles.lobbyMsgNotice : _styles.privateNotice }>
                 { this._getPrivateNoticeMessage() }
-            </Text>
-        );
-    }
-
-    /**
-     * Renders the message lobby chat notice, if necessary.
-     *
-     * @returns {React$Element<*> | null}
-     */
-    _renderLobbyChatNotice() {
-        const { _styles, message } = this.props;
-
-        if (!message.lobbyChat) {
-            return null;
-        }
-
-        return (
-            <Text style = { _styles.lobbyMsgNotice }>
-                { this._getLobbyNoticeMessage() }
             </Text>
         );
     }

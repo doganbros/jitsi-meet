@@ -69,7 +69,6 @@
         "error": "Hata: Mesajınız gönderilmedi. Neden: {{error}}",
         "fieldPlaceHolder": "Mesajınızı buraya yazın",
         "lobbyChatMessageTo": "{{recipient}} adlı kişiye lobi mesajı",
-        "lobbyChatNotice": "{{recipient}} için lobi mesajı",
         "message": "Mesaj",
         "messageAccessibleTitle": "{{user}} diyor:",
         "messageAccessibleTitleMe": "ben diyorum:",

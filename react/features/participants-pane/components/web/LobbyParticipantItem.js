@@ -97,7 +97,8 @@ export const LobbyParticipantItem = ({
                     accessibilityLabel = { `${t('participantsPane.actions.moreModerationActions')} ${p.name}` }
                     className = { styles.moreButton }
                     onClick = { openContextMenu }
-                    ref = { moreButtonRef }>
+                    ref = { moreButtonRef }
+                    secondary = { true }>
                     <Icon src = { IconHorizontalPoints } />
                 </LobbyParticipantQuickAction>
                 <ContextMenu

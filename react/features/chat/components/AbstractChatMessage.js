@@ -90,17 +90,4 @@ export default class AbstractChatMessage<P: Props> extends PureComponent<P> {
             recipient: message.messageType === MESSAGE_TYPE_LOCAL ? message.recipient : t('chat.you')
         });
     }
-
-    /**
-     * Returns the message that is displayed as a notice for lobby chat messages.
-     *
-     * @returns {string}
-     */
-    _getLobbyNoticeMessage() {
-        const { message, t } = this.props;
-
-        return t('chat.lobbyChatNotice', {
-            recipient: message.messageType === MESSAGE_TYPE_LOCAL ? message.recipient : t('chat.you')
-        });
-    }
 }

@@ -13,19 +13,29 @@ export default {
     },
 
     lobbyChatWrapper: {
+        backgroundColor: BaseTheme.palette.ui01,
         alignItems: 'stretch',
-        display: 'flex',
         flexDirection: 'column',
         justifyItems: 'center',
         height: '100%'
     },
 
-    lobbyChatWrapper: {
-        alignItems: 'stretch',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyItems: 'center',
-        height: '100%'
+    lobbyChatHeader: {
+        flexDirection: 'row',
+        padding: 20
+    },
+
+    lobbyChatTitle: {
+        color: '#fff',
+        fontSize: 20,
+        fontWeight: 'bold',
+        flexShrink: 1
+    },
+
+    lobbyChatCloseButton: {
+        fontSize: 20,
+        marginLeft: 20,
+        color: '#fff'
     },
 
     contentWrapper: {

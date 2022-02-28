@@ -42,8 +42,8 @@ class ChatMessage extends AbstractChatMessage<Props> {
                                 </span>
                                 <Message text = { this._getMessageText() } />
                             </div>
-                            { message.privateMessage && this._renderPrivateNotice() }
-                            { message.lobbyChat && !knocking && this._renderLobbyNotice() }
+                            { (message.privateMessage || (message.lobbyChat && !knocking))
+                                && this._renderPrivateNotice() }
                         </div>
                         { (message.privateMessage || (message.lobbyChat && !knocking))
                             && message.messageType !== MESSAGE_TYPE_LOCAL
@@ -71,8 +71,6 @@ class ChatMessage extends AbstractChatMessage<Props> {
 
     _getPrivateNoticeMessage: () => string;
 
-    _getLobbyNoticeMessage: () => string;
-
     /**
      * Renders the display name of the sender.
      *
@@ -97,19 +95,6 @@ class ChatMessage extends AbstractChatMessage<Props> {
         return (
             <div className = 'privatemessagenotice'>
                 { this._getPrivateNoticeMessage() }
-            </div>
-        );
-    }
-
-    /**
-     * Renders the lobby message privacy notice.
-     *
-     * @returns {React$Element<*>}
-     */
-    _renderLobbyNotice() {
-        return (
-            <div className = 'privatemessagenotice'>
-                { this._getLobbyNoticeMessage() }
             </div>
         );
     }

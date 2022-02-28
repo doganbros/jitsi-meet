@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { translate } from '../../../base/i18n';
+import { Icon, IconClose } from '../../../base/icons';
 import { ActionButton, InputField, PreMeetingScreen } from '../../../base/premeeting';
 import { LoadingIndicator } from '../../../base/react';
 import { connect } from '../../../base/redux';
@@ -100,6 +101,8 @@ class LobbyScreen extends AbstractLobbyScreen<Props> {
 
     _onSwitchToPasswordMode: () => void;
 
+    _onToggleChat: () => void;
+
     _renderContent: () => React$Element<*>;
 
     /**
@@ -135,10 +138,21 @@ class LobbyScreen extends AbstractLobbyScreen<Props> {
      * @inheritdoc
      */
     _renderLobbyChat() {
-        const { _lobbyChatMessages } = this.props;
+        const { _lobbyChatMessages, t } = this.props;
+        const { isChatOpen } = this.state;
 
         return (
-            <div className = 'lobby-chat-container'>
+            <div className = { `lobby-chat-container ${isChatOpen ? 'hidden' : ''}` }>
+                <div className = 'lobby-chat-header'>
+                    <h1 className = 'title'>
+                        { t(this._getScreenTitleKey(), { moderator: this.props._lobbyMessageRecipient }) }
+                    </h1>
+                    <Icon
+                        ariaLabel = { t('toolbar.closeChat') }
+                        onClick = { this._onToggleChat }
+                        role = 'button'
+                        src = { IconClose } />
+                </div>
                 <MessageContainer
                     messages = { _lobbyChatMessages }
                     ref = { this._messageContainerRef } />
@@ -234,7 +248,7 @@ class LobbyScreen extends AbstractLobbyScreen<Props> {
      * @inheritdoc
      */
     _renderStandardButtons() {
-        const { _knocking, _renderPassword, t } = this.props;
+        const { _knocking, _isLobbyChatActive, _renderPassword, t } = this.props;
 
         return (
             <>
@@ -244,6 +258,13 @@ class LobbyScreen extends AbstractLobbyScreen<Props> {
                     testId = 'lobby.knockButton'
                     type = 'primary'>
                     { t('lobby.knockButton') }
+                </ActionButton> }
+                { (_knocking && _isLobbyChatActive) && <ActionButton
+                    className = 'open-chat-button'
+                    onClick = { this._onToggleChat }
+                    testId = 'toolbar.openChat'
+                    type = 'primary' >
+                    { t('toolbar.openChat') }
                 </ActionButton> }
                 {_renderPassword && <ActionButton
                     onClick = { this._onSwitchToPasswordMode }

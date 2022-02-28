@@ -107,6 +107,11 @@ type State = {
     email: string,
 
     /**
+     * True if lobby chat widget is open.
+     */
+    isChatOpen: boolean,
+
+    /**
      * The password value entered into the field.
      */
     password: string,
@@ -137,6 +142,7 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
         this.state = {
             displayName: props._participantName || '',
             email: props._participantEmail || '',
+            isChatOpen: true,
             password: '',
             passwordJoinFailed: false,
             screenState: props._participantName ? SCREEN_STATES.VIEW : SCREEN_STATES.EDIT
@@ -152,6 +158,7 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
         this._onSendMessage = this._onSendMessage.bind(this);
         this._onSwitchToKnockMode = this._onSwitchToKnockMode.bind(this);
         this._onSwitchToPasswordMode = this._onSwitchToPasswordMode.bind(this);
+        this._onToggleChat = this._onToggleChat.bind(this);
     }
 
     /**
@@ -336,6 +343,21 @@ export default class AbstractLobbyScreen<P: Props = Props> extends PureComponent
     _onSwitchToPasswordMode() {
         this.setState({
             screenState: SCREEN_STATES.PASSWORD
+        });
+    }
+
+    _onToggleChat: () => void;
+
+    /**
+     * Callback to be invoked for toggling lobby chat visibility.
+     *
+     * @returns {void}
+     */
+    _onToggleChat() {
+        this.setState(_prevState => {
+            return {
+                isChatOpen: !_prevState.isChatOpen
+            };
         });
     }
 
